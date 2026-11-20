@@ -1,0 +1,67 @@
+name: Deploy Plugins to Pages
+
+on:
+  push:
+    branches: [main]
+    paths: ['plugins.json']         # 仅 plugins.json 变化时触发
+  workflow_dispatch:                # 允许手动触发
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install pacote
+
+      # 恢复缓存（加速增量构建）
+      - name: Restore cached plugins
+        id: cache-restore
+        uses: actions/cache@v4
+        with:
+          path: plugins
+          key: plugins-site-${{ hashFiles('plugins.json') }}
+          restore-keys: |
+            plugins-site-
+
+      # 如果缓存未命中，确保 plugins 目录存在
+      - name: Ensure plugins directory
+        run: mkdir -p plugins
+
+      - name: Sync plugins from plugins.json
+        run: node scripts/sync.js
+
+      # 保存缓存（即使 key 不变也会强制保存，因为内容已更新）
+      - name: Save plugins cache
+        uses: actions/cache/save@v4
+        with:
+          path: plugins
+          key: plugins-site-${{ hashFiles('plugins.json') }}
+
+      - name: Upload artifact for Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: plugins
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

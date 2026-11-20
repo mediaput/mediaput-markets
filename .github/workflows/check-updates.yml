@@ -1,0 +1,41 @@
+name: Check Plugin Updates
+
+on:
+  schedule:
+    - cron: '0 */6 * * *'          # 每 6 小时运行一次
+  workflow_dispatch:                # 允许手动触发
+
+permissions:
+  contents: write                  # 允许修改 plugins.json 并 push
+  actions: write                   # 允许触发其他 workflow
+
+jobs:
+  check-and-update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Check and update plugins.json
+        run: node scripts/check-updates.js
+
+      - name: Commit changes if any
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add plugins.json
+          git diff --cached --quiet && echo "No changes" && exit 0
+          git commit -m "chore: auto-update plugins.json with latest versions"
+          git push
+
+      - name: Trigger deploy workflow
+        if: success()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh workflow run deploy-plugins.yml --ref main
