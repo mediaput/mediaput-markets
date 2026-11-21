@@ -10,5 +10,9 @@
   {
     "name": "@mediaput/plugin-zhihu-article-view",
     "version": "0.0.5"
+  },
+  {
+    "name": "@mediaput/plugin-zhihu-article-view",
+    "version": "0.0.6"
   }
 ]
