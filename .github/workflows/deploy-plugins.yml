@@ -58,9 +58,8 @@ jobs:
           key: plugins-site-${{ hashFiles('plugins.json') }}
 
       - name: Upload artifact for Pages
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-pages-artifact@v3   # 打包为 tar.gz 并校验，deploy-pages 只接受该格式
         with:
-          name: github-pages        # 必须与 deploy-pages 期望的名称一致
           path: plugins
 
       - name: Deploy to GitHub Pages
