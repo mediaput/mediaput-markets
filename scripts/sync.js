@@ -67,7 +67,7 @@ function generateRootIndex(siteDir, plugins) {
  * 拷贝plugins.json
  */
 function copyPluginMeta() {
-  fs.copyFile("plugins.json", path.join(siteDir, "plugins.json"))
+  fs.copyFileSync("plugins.json", path.join(siteDir, "plugins.json"))
 }
 
 async function processPlugins() {
