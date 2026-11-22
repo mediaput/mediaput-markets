@@ -63,6 +63,12 @@ function generateRootIndex(siteDir, plugins) {
   html += `</ul></body></html>`;
   fs.writeFileSync(path.join(siteDir, 'index.html'), html);
 }
+/**
+ * 拷贝plugins.json
+ */
+function copyPluginMeta() {
+  fs.copyFile("plugins.json", path.join(siteDir, "plugins.json"))
+}
 
 async function processPlugins() {
   for (const plugin of pluginsConfig) {
@@ -100,3 +106,4 @@ processPlugins().catch(err => {
   console.error(err);
   process.exit(1);
 });
+copyPluginMeta();
