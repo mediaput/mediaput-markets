@@ -1,3 +1,18 @@
 [
-  {"name": "@mediaput/plugin-zhihu-article-view", "version": "0.0.3"}
+  {
+    "name": "@mediaput/plugin-zhihu-article-view",
+    "version": "0.0.3"
+  },
+  {
+    "name": "@mediaput/plugin-zhihu-article-view",
+    "version": "0.0.4"
+  },
+  {
+    "name": "@mediaput/plugin-zhihu-article-view",
+    "version": "0.0.5"
+  },
+  {
+    "name": "@mediaput/plugin-zhihu-article-view",
+    "version": "0.0.6"
+  }
 ]
