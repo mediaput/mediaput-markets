@@ -3,7 +3,15 @@ name: Check Plugin Updates
 on:
   schedule:
     - cron: '0 */6 * * *'          # 每 6 小时运行一次
-  workflow_dispatch:                # 允许手动触发
+  workflow_dispatch:               # 允许手动触发
+    inputs:
+      trace_id:
+          description: "Caller trace id"
+          required: false
+          type: string
+          default: ""
+
+run-name: "check-updates ${{ inputs.trace_id }}"   # 写进 display_title，兜底反查靠它
 
 permissions:
   contents: write                  # 允许修改 plugins.json 并 push
