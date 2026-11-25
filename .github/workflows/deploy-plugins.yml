@@ -5,6 +5,14 @@ on:
     branches: [main]
     paths: ['plugins.json']         # 仅 plugins.json 变化时触发
   workflow_dispatch:                # 允许手动触发
+    inputs:
+      trace_id:
+          description: "Caller trace id"
+          required: false
+          type: string
+          default: ""
+
+run-name: "Deploy Plugins to Pages ${{ inputs.trace_id }}"   # 写进 display_title，兜底反查靠它
 
 permissions:
   contents: read
