@@ -30,17 +30,32 @@ jobs:
       - name: Check and update plugins.json
         run: node scripts/check-updates.js
 
-      - name: Commit changes if any
+      # 将修改暂存
+      - name: Stage changes
+        run: git add plugins.json
+
+      # 判断是否有实质修改（staged 区域是否有变动）
+      - name: Check if there are changes
+        id: check_changes
+        run: |
+          if git diff --cached --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      # 只有存在改动时才提交并推送
+      - name: Commit and push changes
+        if: steps.check_changes.outputs.changed == 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add plugins.json
-          git diff --cached --quiet && echo "No changes" && exit 0
           git commit -m "chore: auto-update plugins.json with latest versions"
           git push
 
+      # 只有存在改动时才触发部署 workflow
       - name: Trigger deploy workflow
-        if: success()
+        if: steps.check_changes.outputs.changed == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
