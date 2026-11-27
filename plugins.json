@@ -1,26 +1,14 @@
 [
   {
-    "name": "@mediaput/plugin-zhihu-article-view",
-    "version": "0.0.4"
-  },
-  {
-    "name": "@mediaput/plugin-zhihu-article-view",
-    "version": "0.0.5"
-  },
-  {
-    "name": "@mediaput/plugin-zhihu-article-view",
-    "version": "0.0.6"
-  },
-  {
     "name": "@mediaput/plugin-zhihu-article-script",
     "version": "1.1.2"
   },
   {
     "name": "@mediaput/plugin-zhihu-article-view",
-    "version": "0.0.7"
+    "version": "0.0.8"
   },
   {
-    "name": "@mediaput/plugin-zhihu-article-view",
-    "version": "0.0.8"
+    "name": "@mediaput/plugin-baijiahao-article-view",
+    "version": "0.0.0"
   }
 ]
