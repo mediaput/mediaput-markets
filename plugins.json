@@ -14,5 +14,9 @@
   {
     "name": "@mediaput/plugin-baijiahao-article-script",
     "version": "0.0.0-stage"
+  },
+  {
+    "name": "@mediaput/plugin-baijiahao-article-script",
+    "version": "0.0.0"
   }
 ]
